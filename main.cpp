@@ -1,42 +1,32 @@
-#include "Config.h"
-#include "websever.h"
-#include <stdio>
-int main(int argc, char *argv[])
-{
-    //需要修改的数据库信息,登录名,密码,库名
-    string user = "root";
-    string passwd = "ubuntu";
-    string databasename = "db_test";
+//http socket.h 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <cassert>
+#include <sys/epoll.h>
 
-    //命令行解析
-    Config config;
-    config.parse_arg(argc, argv);
+int listenfd = socket(PF_INET, SOCK_STREAM, 0);
+assert(listenfd >= 0);
 
-    WebServer server;
+//struct linger tmp={1,0};
+//SO_LINGER若有数据待发送，延迟关闭
+//setsockopt(listenfd,SOL_SOCKET,SO_LINGER,&tmp,sizeof(tmp));
 
-    //初始化
-    server.init(config.PORT, user, passwd, databasename, config.LOGWrite, 
-                config.OPT_LINGER, config.TRIGMode,  config.sql_num,  config.thread_num, 
-                config.close_log, config.actor_model);
-    
+int ret = 0;
+struct sockaddr_in address;
+bzero(&address, sizeof(address));
+address.sin_family = AF_INET;
+address.sin_addr.s_addr = htonl(INADDR_ANY);
+address.sin_port = htons(port);
 
-    //日志
-    server.log_write();
-
-    //数据库
-    server.sql_pool();
-
-    //线程池
-    server.thread_pool();
-
-    //触发模式
-    server.trig_mode();
-
-    //监听
-    server.eventListen();
-
-    //运行
-    server.eventLoop();
-
-    return 0;
-}
+int flag = 1;
+setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
+ret = bind(listenfd, (struct sockaddr *)&address, sizeof(address));
+assert(ret >= 0);
+ret = listen(listenfd, 5);
+assert(ret >= 0);
