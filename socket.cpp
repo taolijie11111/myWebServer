@@ -1,4 +1,13 @@
 //WebServer
+/*
+technological process:
+step 1:socket()
+step 2:bind()--struct sockaddr_in 
+step 3:listen()
+step 4:accpet()
+step 5:data
+step 6:close() -listenfd && cupsacceptfd
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,6 +53,21 @@ int main()
     //        };
     serv.sin_family=AF_INET;
     serv.sin_port=htons(8888);//not use number before 1024
+    /*
+    POST:
+    端口：
+    逻辑端口：是指逻辑意义上用于区分服务的端口，通过不同的逻辑端口来区分不同的服务，如TCP/IP
+    协议中的服务端口，比如用于浏览网页服务的80端口，用于FTP服务的21端口等。
+    物理端口：指的是物理存在的端口，如ADSL Modem、集线器、交换机、路由器上用 于连接其他网络
+    设备的接口，如RJ-45端口、SC端口等等。
+
+    端口号：
+    为了对端口进行区分，将每个端口进行了编号，这就是端口号。
+
+    二：客户端使用的端口号：
+    也叫做动态端口号，或者短暂端口号。数值为49152~65535，由于这类端口号仅在客户进程运行时才
+    动态选择，程序结束，则已使用过的端口号就被回收，以便以后供其它客户进程使用。
+    */
     serv.sin_addr.s_addr=htonl(INADDR_ANY);
     int ret=bind(lfd,(struct sockaddr *)&serv,sizeof(serv));
     assert(ret>=0);
