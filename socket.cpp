@@ -35,7 +35,6 @@ int main()
      The  bzero()  function  erases  the  data  in the n bytes of the memory
        starting at the location pointed to by s, by writing zeroes (bytes con‐
        taining '\0') to that area.
-
     */
     //man 7 ip
     // struct sockaddr_in {
@@ -76,7 +75,7 @@ int main()
         //read data
         memset(buf,0x00,sizeof(buf));
         n=read(cfd,buf,sizeof(buf));//ssize_t read(int fd, void *buf, size_t count);
-        assert(n>0);
+        assert(n>0);// it close if sever close
         cout<<"n: "<<n<<"buf: "<<buf<<endl;
         //man toupper
         // These functions convert lowercase letters to uppercase,
@@ -95,6 +94,6 @@ int main()
 }
 
 /*
-test code:
+test server:
 nc 127.0.0.1 8888
 */
