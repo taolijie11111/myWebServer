@@ -72,6 +72,8 @@ int main()
     int ret=bind(lfd,(struct sockaddr *)&serv,sizeof(serv));
     assert(ret>=0);
 
+
+
     //step 3: listen
     //int listen(int sockfd, int backlog);
     listen(lfd,128);//mix number backlog=128
@@ -82,8 +84,9 @@ int main()
     socklen_t len=sizeof(client);//len is a out and in virtual
     int cfd=accept(lfd,(struct sockaddr *)&client,&len);
     //linked
-    char STP[16];
+    char SIP[16];
     memset(SIP,0x00,sizeof(SIP));
+    //get client IP and Post
     cout<<"client:IP:"<<inet_ntop(AF_INET,&client.sin_addr.s_addr,SIP,sizeof(SIP))<<"\tPORT:"<<ntohs(client.sin_port)<<endl;
 
 

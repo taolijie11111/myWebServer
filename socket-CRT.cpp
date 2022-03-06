@@ -66,8 +66,6 @@ int main()
     On error, -1  is returned, and errno is set appropriately.
     */
 
-    sleep(30);
-
     //data
     int n=0;
     char buf[256];
