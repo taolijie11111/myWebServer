@@ -66,6 +66,8 @@ int main()
     On error, -1  is returned, and errno is set appropriately.
     */
 
+    sleep(30);
+
     //data
     int n=0;
     char buf[256];
@@ -90,4 +92,12 @@ int main()
 }
 
        
-
+/*
+check network:
+netstat -anp |grep 8888
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      2466/./socket       
+tcp        0      0 127.0.0.1:8888          127.0.0.1:51514         ESTABLISHED 2466/./socket       
+tcp        0      0 127.0.0.1:51514         127.0.0.1:8888          ESTABLISHED 2544/./socket-CRT   
+*/

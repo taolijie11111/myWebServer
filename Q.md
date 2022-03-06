@@ -21,4 +21,4 @@ Aborted (core dumped)
 ```
 
 reason:
-covert is success but it is DEC not HEX
+websever don't open ,so it can't connect
