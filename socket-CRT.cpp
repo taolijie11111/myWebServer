@@ -34,6 +34,9 @@ using namespace std;
 #include <arpa/inet.h>
 
 
+//
+
+
 
 int main()
 {
@@ -46,9 +49,22 @@ int main()
     serv.sin_family=AF_INET;
     serv.sin_port=htons(8888);
     inet_pton(AF_INET,"127.0.0.1",&serv.sin_addr.s_addr);
+    /*
+    AF_INET
+            src points to a character  string  containing  an  IPv4  network
+            address  in  dotted-decimal format, "ddd.ddd.ddd.ddd", where ddd
+            is a decimal number of up to three digits in the range 0 to 255.
+            The  address is converted to a struct in_addr and copied to dst,
+            which must be sizeof(struct in_addr) (4) bytes (32 bits) long.
+    */
     cout<<"serv.sin_addr.sin_addr:"<<serv.sin_addr.s_addr<<endl;
     int ret=connect(cfd,(struct sockaddr *)&serv,sizeof(serv));
     assert(ret>=0);
+    /*
+    connect():
+    If  the connection or binding succeeds, zero is returned. 
+    On error, -1  is returned, and errno is set appropriately.
+    */
 
     //data
     int n=0;
