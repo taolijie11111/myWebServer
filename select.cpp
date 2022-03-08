@@ -69,6 +69,8 @@ int main()
             break;
         }
 
+        cout<<"nready:"<<nready<<endl;
+
         //clinet connet apply
         if(FD_ISSET(lfd,&tmpfds)){
             //recive new apply
@@ -108,14 +110,11 @@ int main()
                     }
                     Write(sockfd,buf,n);
                 }
+                if(--nready==0)break;
             }
         }
 
     }
-    
-
-
-
     //close
     close(lfd);
 
