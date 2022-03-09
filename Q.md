@@ -60,8 +60,19 @@ flow:
             continue;
         }
         //clients data come
-        if()
+        n=Read(sockfd,buf,sizeof(buf));
+        if(n<=0)
+        {
+            close(sockfd);
+            //out to tree
+            epoll_ctl(epfd,EPOLL_CTL_DEL,sockfd,NULL);
+            perror("read error");
+            continue;
+        }
+        else{
+            whrite(sockfd,buf,n);
+        }
     }
-
    }
+6. close(lfd);
 ```
