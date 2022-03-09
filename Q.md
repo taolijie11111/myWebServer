@@ -22,3 +22,46 @@ Aborted (core dumped)
 
 reason:
 websever don't open ,so it can't connect
+
+## epoll
+flow:
+```C++
+1. socket()---lfd
+2. setsockopt()
+3. bind()
+4. listen()
+5. create epoll tree ---int epfd=epoll_create();
+   //lfd up to tree
+   struct epoll_event ev;
+   ev.everts=EPOLLIN;
+   ev.data.fd=lfd;
+   epoll_ctl(epfd,EPOLL_CTL_ADD,lfd,&ev);
+
+   //waite for events
+   struct epoll_event events[1024];
+   while(1)
+   {
+       nready=epoll_wait(epfd,events,1024,-1);
+       if(nready<0){
+           if(error==EINTR)continue;
+           break;
+       }
+    for(i=0;i<nready;i++)
+    {
+        sockfd=events[i].data.fd;
+        //clients come
+        if(sockfd=lfd){
+            cfd=Accept(lfd,NULL.NULL);
+
+            //up it to tree
+            ev.data.fd=cfd;
+            ev.events=EPOLLIN;
+            epoll_ctl(epfd,EPOLL_CTL_ADD,cfd,&ev);
+            continue;
+        }
+        //clients data come
+        if()
+    }
+
+   }
+```
