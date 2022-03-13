@@ -23,9 +23,20 @@ class LogEvent{
 
 class Logger{
 public:
+	emum Level{
+	DEBUG=1,
+		INFO=2,
+		WARN=3,
+		ERROR =4,
+		FATAL=5
+	};
+
 Logger();
+
+	void log(Level level,const LogEvent& event);
 private:
-}
+	LogAppender::ptr
+};
 
 class LogAppender{
 public:
