@@ -23,7 +23,7 @@ const char* LogLevel::ToString(LogLevel::Level level){
     return "UNKNOW";
 }
 
-class MessageFormatItem : public LogFormatter::FormatItem {
+	class MessageFormatItem : public LogFormatter::FormatItem {
 public:
     MessageFormatItem(const std::string& str = "") {}
     void format(std::ostream& os, Logger::ptr logger, LogLevel::Level level, LogEvent::ptr event) override {
