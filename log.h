@@ -62,8 +62,7 @@ class LogFormatter{
 	//输出格式
 
 
-	std::string format(LogLevel::Level level,LogEvent::ptr event);
-	private:
+	std::string format(std::shared_ptr<Logger> logger,LogLevel::Level level,LogEvent::ptr event);
 	class FormatItem{
 		public:
 		typedef std::shared_ptr<FormatItem>ptr;
@@ -110,6 +109,7 @@ class Logger:public std::enable_shared_from_this<Logger>{
 		void delAppender(LogAppender::ptr appender);
 		LogLevel::Level getLevel() const {return m_level;}
 		void setLevel(LogLevel::Level val){m_level=val;}
+		const std::string& getName() const {return m_name;}
 
 	private:
 		std::string m_name;		                 //日志名称

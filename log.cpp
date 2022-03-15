@@ -23,13 +23,13 @@ const char* LogLevel::ToString(LogLevel::Level level){
     return "UNKNOW";
 }
 
- class MessageFormatItem:public LogFormatter::FormatItem{
-        public:
-        MassageFormatItem(const std::string& str=""){};
-        void format(std::ostream& os,Logger::ptr logger,LogLevel::Level level,LogEvent::ptr event)override{
-            os<<event->getContent();
-        }
-    };
+class MessageFormatItem : public LogFormatter::FormatItem {
+public:
+    MessageFormatItem(const std::string& str = "") {}
+    void format(std::ostream& os, Logger::ptr logger, LogLevel::Level level, LogEvent::ptr event) override {
+        os << event->getContent();
+    }
+};
 
     class LevelFormatItem:public LogFormatter::FormatItem{
         public:
@@ -311,4 +311,5 @@ void LogFormatter::init(){
         }
     }
    
+}
 }
