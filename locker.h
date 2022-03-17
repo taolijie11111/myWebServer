@@ -85,25 +85,33 @@ class locker
     pthread_mutex_t m_mutex;
 };
 
+/**
+ * cond条件变量
+ * 提供线程间的通讯机制，当某个共享数据达到某个值的时候，唤醒等待这个共享数据的线程
+ * 
+ */
+
 class cond
 {
     public:
     cond(){
+        //初始化
         if(pthread_cond_init(&m_cond,NULL)!=0)throw std::exception();
     }
     ~cond(){
+        //删除
         pthread_cond_destroy(&m_cond);
     }
     bool wait(pthread_mutex_t *m_mutex){
         int ret=0;
-        
+        //等待条件目标变量，当其成功返回时，目标锁再次被锁上
         ret=pthread_cond_wait(&m_cond,m_mutex);
 
         return ret==0;
     }
     bool timewait(pthread_mutex_t *m_mutex,struct timespec t){
         int ret=0;
-        
+        // 线程等待一定的时间，如果超时或有信号触发，线程唤醒
         ret=pthread_cond_timedwait(&m_cond,m_mutex,&t);
 
         return ret==0;
@@ -114,6 +122,8 @@ class cond
 
     bool broadcast()
     {
+        //以广播的形式唤醒所有等待目标条件变量的线程
+        //线程等待信号触发，如果没有信号触发，无限期等待下去。
         return pthread_cond_broadcast(&m_cond)==0;
     }
     private:
