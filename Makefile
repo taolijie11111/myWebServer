@@ -1,4 +1,4 @@
-server: main.cpp
+server: 
 
 clean:
 	rm -r server
