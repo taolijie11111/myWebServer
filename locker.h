@@ -28,7 +28,7 @@
  */
 
 class sem{
-    public:
+public:
     //构造函数
     sem()
     {
@@ -55,14 +55,14 @@ class sem{
         //以原子操作的方式将信号量+1，信号量>0时，其他正在调用sem_wait等待信号量的线程将被唤醒
         return sem_post(&m_sem);
     }
-    private:
+private:
     sem_t m_sem;
 };
 
 
 class locker
 {
-    public:
+public:
     locker(){
         //初始化互斥锁
         if(pthread_mutex_init(&m_mutex,NULL)!=0)throw std::exception();
@@ -81,7 +81,7 @@ class locker
         return &m_mutex;
     }
 
-    private:
+private:
     pthread_mutex_t m_mutex;
 };
 
@@ -93,7 +93,7 @@ class locker
 
 class cond
 {
-    public:
+public:
     cond(){
         //初始化
         if(pthread_cond_init(&m_cond,NULL)!=0)throw std::exception();
@@ -126,6 +126,6 @@ class cond
         //线程等待信号触发，如果没有信号触发，无限期等待下去。
         return pthread_cond_broadcast(&m_cond)==0;
     }
-    private:
+private:
     pthread_cond_t m_cond;
 };
