@@ -6,6 +6,8 @@ sort_timer_lst::sort_timer_lst()
     head = NULL;
     tail = NULL;
 }
+
+//常销毁链表
 sort_timer_lst::~sort_timer_lst()
 {
     util_timer *tmp = head;
@@ -16,7 +18,7 @@ sort_timer_lst::~sort_timer_lst()
         tmp = head;
     }
 }
-
+//添加定时器，内部调用似有成员add_timer
 void sort_timer_lst::add_timer(util_timer *timer)
 {
     if (!timer)
@@ -28,6 +30,9 @@ void sort_timer_lst::add_timer(util_timer *timer)
         head = tail = timer;
         return;
     }
+
+    //如果新的定时器超过时间小于当前头部节点
+    //直接将当前定时器结点作为头部结点
     if (timer->expire < head->expire)
     {
         timer->next = head;
@@ -35,19 +40,28 @@ void sort_timer_lst::add_timer(util_timer *timer)
         head = timer;
         return;
     }
+
+    //否则调用私有成员，调整内部结点
     add_timer(timer, head);
 }
+
+//调整定时器，任务发生变化时，调整定时器在链表中的位置
 void sort_timer_lst::adjust_timer(util_timer *timer)
 {
     if (!timer)
     {
-        return;
+        return;//可以什么都不返回
     }
     util_timer *tmp = timer->next;
+
+    //被调整的定时器在链表尾部
+    //定时器超时值仍然小于下一个定时器超时值，不调整
     if (!tmp || (timer->expire < tmp->expire))
     {
         return;
     }
+
+    //被调整定时器的是链表结点，将定时器取出，重新插入
     if (timer == head)
     {
         head = head->next;
@@ -62,6 +76,8 @@ void sort_timer_lst::adjust_timer(util_timer *timer)
         add_timer(timer, timer->next);
     }
 }
+
+//删除定时器
 void sort_timer_lst::del_timer(util_timer *timer)
 {
     if (!timer)
@@ -93,6 +109,7 @@ void sort_timer_lst::del_timer(util_timer *timer)
     timer->next->prev = timer->prev;
     delete timer;
 }
+//定时任务处理函数
 void sort_timer_lst::tick()
 {
     if (!head)

@@ -47,6 +47,7 @@ public:
     util_timer *next;
 };
 
+//定时器容器类
 class sort_timer_lst
 {
 public:

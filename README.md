@@ -155,9 +155,10 @@ Demo演示
 
     ```C++
     //数据库登录名,密码,库名
-    string user = "root";
-    string passwd = "root";
-    string databasename = "yourdb";
+    //mysql -r another -q mydb -p 343536
+    string user = "another";
+    string passwd = "343536";
+    string databasename = "mydb";
     ```
 
 * build
