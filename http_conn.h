@@ -48,12 +48,14 @@ public:
         PATH
     };
     //check_state
+    //主状态机的状态
     enum CHECK_STATE
     {
         CHECK_STATE_REQUESTLINE = 0,
         CHECK_STATE_HEADER,
         CHECK_STATE_CONTENT
     };
+    //报文解析结果
     enum HTTP_CODE
     {
         NO_REQUEST,
@@ -65,6 +67,7 @@ public:
         INTERNAL_ERROR,
         CLOSED_CONNECTION
     };
+    //从状态机的状态
     enum LINE_STATUS
     {
         LINE_OK = 0,
@@ -79,15 +82,19 @@ public:
 public:
     //初始化套接字地址，函数内部会调用私有方法init
     void init(int sockfd, const sockaddr_in &addr, char *, int, int, string user, string passwd, string sqlname);
+    //关闭http的连接
     void close_conn(bool real_close = true);
     void process();
+    //读取浏览器端发来的全部数据
     bool read_once();
+    //响应报文写入函数
     bool write();
     sockaddr_in *get_address()
     {
         return &m_address;
     }
     //同步线程初始化数据库读取表
+    //有关数据库
     void initmysql_result(connection_pool *connPool);
     int timer_flag;
     int improv;
@@ -95,7 +102,7 @@ public:
 
 private:
     void init();
-    HTTP_CODE process_read();
+    HTTP_CODE process_read();//返回一个HTTP_CODE的枚举类型
     bool process_write(HTTP_CODE ret);
     HTTP_CODE parse_request_line(char *text);
     HTTP_CODE parse_headers(char *text);
@@ -105,11 +112,12 @@ private:
 //m_start_line是已经解析的字符
     //get_line用于将指针向后偏移，指向未处理的字
     char *get_line() { return m_read_buf + m_start_line; };
-    
+//从状态机读取一行，分析是请求报文的哪一部分
     LINE_STATUS parse_line();
     
     void unmap();
 
+//根据响应的报文格式，生成对应的8个部分
     bool add_response(const char *format, ...);
     bool add_content(const char *content);
     bool add_status_line(int status, const char *title);
@@ -158,7 +166,8 @@ private:
     
     char *doc_root;
 
-    map<string, string> m_users;
+    map<string, string> m_users;//使用红黑树的map
+
     int m_TRIGMode;
     int m_close_log;
 
