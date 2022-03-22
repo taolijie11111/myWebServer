@@ -26,8 +26,6 @@ public:
 
         m_max_size = max_size;
         m_array = new T[max_size];
-        //std::shared_ptr<T[]> m_array(new int[max_size]);//定义智能指针
-        //感觉这里是没有必要用智能指针，因为数组还需要删除
         m_size = 0;
         m_front = -1;
         m_back = -1;
