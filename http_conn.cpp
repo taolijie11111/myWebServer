@@ -508,9 +508,13 @@ http_conn::HTTP_CODE http_conn::do_request()
     if (S_ISDIR(m_file_stat.st_mode))
         return BAD_REQUEST;
 
-    int fd = open(m_real_file, O_RDONLY);
-    m_file_address = (char *)mmap(0, m_file_stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-    close(fd);
+    int fd = open(m_real_file, O_RDONLY);//只读操作
+    m_file_address = (char *)mmap(0, m_file_stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);//内存映射
+    //获取文件长度可以用stat和lseek
+    //#define PROT_READ	0x1		/* Page can be read.  */
+    //#define MAP_PRIVATE	0x02		/* Changes are private.  */ 不用不，内存映射区的数据改变了，对原来的文件不会修改，会重新创建一个新的文件（copy on write）写时拷贝
+    //open和PROT之间不能冲突，读写权限之类的
+    close(fd);//关闭文件描述符
     return FILE_REQUEST;
 }
 void http_conn::unmap()
