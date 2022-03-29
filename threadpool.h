@@ -1,10 +1,15 @@
 #pragma once
+#include <stdio.h>
+#include <stdlib.h>
 #include "locker.h"
 #include <list>
 #include <pthread.h>
 #include <exception>
 #include <iostream>
 #include <cstdio>
+
+using namespace std;
+
 //线程池类，为了代码的复用
 template<typename T>
 class threadpool{
@@ -49,7 +54,7 @@ m_thread_number(thread_number),m_max_requests(max_requests),m_stop(false),m_thre
 
     //创建thread_number个线程，并将他们设置为线程脱离
     for(int i=0;i<thread_number;++i){
-        cout<< "create the %d thread"<<endl;
+        cout<< "create the thread"<<endl;
         
         if((pthread_create(m_threads+i,NULL,worker,this))!=0){
             delete[] m_threads;
@@ -72,13 +77,13 @@ threadpool<T>::~threadpool(){
 
 template<typename T>
 bool threadpool<T>::append(T* request){
-    m_quuelocker.lock();
+    m_queuelocker.lock();
     if(m_workqueue.size()>m_max_requests){
-        m_quuelocker.unlock();
+        m_queuelocker.unlock();
         return false;
     }
     m_workqueue.push_back(request);
-    m_quuelocker.unlock();
+    m_queuelocker.unlock();
     m_queuestat.post();//信号量判断需不需要人来执行
     return true;
 }
@@ -96,7 +101,7 @@ void threadpool<T>::run(){
     {
         m_queuestat.wait();//如果信号量有值就会阻塞
         m_queuelocker.lock();
-        if(m_workqueue.unlock()){
+        if(m_workqueue.empty()){
             m_queuelocker.unlock();
             continue;
         }

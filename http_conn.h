@@ -27,5 +27,4 @@ public:
 private:
     int m_sockfd;   //该http连接的fd
     sockaddr_in m_address;
-
 };

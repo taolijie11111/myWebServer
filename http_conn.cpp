@@ -48,9 +48,6 @@ void modfd(int epollfd,int fd,int ev){
     epoll_ctl(epollfd,EPOLL_CTL_MOD,fd,&event);
 }
 
-void http_conn::init(int sockfd , const sockaddr_in& addr){
-
-}
 
 void http_conn::init(int sockfd,const sockaddr_in& addr){
     m_sockfd =sockfd;
